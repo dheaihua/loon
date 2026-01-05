@@ -1,0 +1,17 @@
+#!name=哈啰出行去挑战赛
+#!desc=去除哈啰出行App首页的挑战赛/勋章模块\n使用正则重写API响应，清空挑战赛数据
+#!author=您的名称
+#!icon=https://raw.githubusercontent.com/icon.png
+#!system=iOS, iPadOS
+#!loon_version=3.2.1
+#!date=2024-01-08
+
+[MITM]
+hostname = taxiapi.hellobike.com
+
+[Script]
+# 拦截首页API，清空挑战赛数据
+http-response ^https?://taxiapi\.hellobike\.com/api.* script-path=https://example.com/hellobike.js
+
+# 如果有需要，可以拦截资源图片
+# http-request ^https?://resource\.51downapp\.cn/hl_homepage_challenge.* script-echo-response
