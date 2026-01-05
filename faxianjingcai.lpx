@@ -22,10 +22,10 @@ DOMAIN-SUFFIX,loggw.95508.com,REJECT
 
 [Script]
 # 拦截发现精彩广告日志上报（核心）
-发现精彩-广告日志拦截 = type=http-response,pattern=^https:\/\/8\.95508\.com\/creditbank\/mas\/secgw\/logUpload\.do.*,requires-body=1,script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/disable_fx_ads.js
+type=http-response,pattern=^https:\/\/8\.95508\.com\/creditbank\/mas\/secgw\/logUpload\.do.*,requires-body=1,script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/disable_fx_ads.js
 
 # 拦截广告配置下发（防止再次触发）
-发现精彩-广告配置拦截 = type=http-response,pattern=^https:\/\/8\.95508\.com\/creditbank\/mas\/loggw\/logConfig\.do.*,requires-body=1,script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/disable_fx_ads.js
+type=http-response,pattern=^https:\/\/8\.95508\.com\/creditbank\/mas\/loggw\/logConfig\.do.*,requires-body=1,script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/disable_fx_ads.js
 
 [MitM]
 hostname = 8.95508.com
