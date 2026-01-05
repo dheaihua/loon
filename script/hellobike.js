@@ -1,23 +1,32 @@
-
-// 清空哈啰出行挑战赛数据
 let body = $response.body;
 
 try {
-  // 替换topBanners为空数组
-  body = body.replace(/"topBanners":\[.*?\]/g, '"topBanners":[]');
+  let obj = JSON.parse(body);
   
-  // 替换bottomBanners为空数组
-  body = body.replace(/"bottomBanners":\[.*?\]/g, '"bottomBanners":[]');
+  // 清空topBanners和bottomBanners，无论它们在哪一层
+  function clearBanners(obj) {
+    if (typeof obj !== 'object' || obj === null) return;
+    
+    // 如果是数组，遍历每个元素
+    if (Array.isArray(obj)) {
+      obj.forEach(item => clearBanners(item));
+      return;
+    }
+    
+    // 如果是对象，检查是否有topBanners或bottomBanners属性
+    for (let key in obj) {
+      if (key === 'topBanners' || key === 'bottomBanners') {
+        obj[key] = [];
+      } else {
+        clearBanners(obj[key]);
+      }
+    }
+  }
   
-  // 替换resources为空数组（可选）
-  body = body.replace(/"resources":\[.*?\]/g, '"resources":[]');
-  
-  // 如果是模块化结构，删除整个挑战赛模块
-  body = body.replace(/"moduleId":"challenge_round".*?},?/g, '');
-  
-  console.log("哈啰出行挑战赛模块已移除");
+  clearBanners(obj);
+  body = JSON.stringify(obj);
 } catch (e) {
-  console.log("处理响应时出错：" + e);
+  console.log('解析JSON失败：' + e);
 }
 
 $done({body});
