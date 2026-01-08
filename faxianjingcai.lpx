@@ -1,31 +1,28 @@
-#!name=发现精彩-开屏广告拦截
-#!desc=拦截发现精彩 App 开屏广告及相关广告日志上报\n防止广告二次回弹\n仅作用于广告相关接口
+#!name=发现精彩-开屏广告清除
+#!desc=基于广告生命周期拦截发现精彩App开屏广告\n不修改核心网关(mgw)\n稳定不闪退
 #!author=ChatGPT
-#!homepage=https://example.com
-#!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/No_Ads.png
 #!tag=去广告 发现精彩
 #!system=iOS iPadOS
 #!system_version=15
 #!loon_version=3.2.1
-#!date=2026-01-05
+#!date=2026-01-06
 
 [Argument]
 
 [General]
 
 [Rule]
-# （可选）广告域名兜底拦截
+# 广告素材域名（兜底）
 DOMAIN-SUFFIX,admaster-public.51downapp.cn,REJECT
-DOMAIN-SUFFIX,loggw.95508.com,REJECT
+DOMAIN-SUFFIX,resource.51downapp.cn,REJECT
 
 [Rewrite]
 
 [Script]
-# 拦截发现精彩广告日志上报（核心）
-http-response ^https:\/\/8\.95508\.com\/creditbank\/mas\/secgw\/logUpload\.do.* script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/disable_fx_ads.js, requires-body=true, timeout=60
+# ① 广告配置下发拦截
+http-response,pattern=^https:\/\/8\.95508\.com\/creditbank\/mas\/loggw\/logConfig\.do.*,requires-body=1,script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/disable_fx_ads.js, requires-body=true, timeout=60
 
-# 拦截广告配置下发（防止再次触发）
-http-response ^https:\/\/8\.95508\.com\/creditbank\/mas\/loggw\/logConfig\.do.* script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/disable_fx_ads.js, requires-body=true, timeout=60
-
+# ② 广告日志上报拦截（关键）
+http-response,pattern=^https:\/\/8\.95508\.com\/creditbank\/mas\/secgw\/logUpload\.do.*,requires-body=1,script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/disable_fx_ads.js, requires-body=true, timeout=60
 [MitM]
 hostname = 8.95508.com
