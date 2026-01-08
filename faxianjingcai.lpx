@@ -20,9 +20,9 @@ DOMAIN-SUFFIX,resource.51downapp.cn,REJECT
 
 [Script]
 # ① 广告配置下发拦截
-http-response ^https:\/\/8\.95508\.com\/creditbank\/mas\/loggw\/logConfig\.do.* requires-body=1 script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/disable_fx_ads.js requires-body=true timeout=60
+http-response ^https:\/\/8\.95508\.com\/creditbank\/mas\/loggw\/logConfig\.do.* script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/disable_fx_ads.js,requires-body=true,timeout=20
 
 # ② 广告日志上报拦截（关键）
-http-response ^https:\/\/8\.95508\.com\/creditbank\/mas\/secgw\/logUpload\.do.* requires-body=1 script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/disable_fx_ads.js requires-body=true timeout=60
+http-response ^https:\/\/8\.95508\.com\/creditbank\/mas\/secgw\/logUpload\.do.* script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/disable_fx_ads.js,requires-body=true,timeout=20
 [MitM]
 hostname = 8.95508.com
