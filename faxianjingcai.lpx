@@ -1,6 +1,6 @@
 #!name=发现精彩-开屏广告清除
 #!desc=基于广告生命周期拦截发现精彩App开屏广告\n不修改核心网关(mgw)\n稳定不闪退
-#!author=ChatGPT
+#!author=
 #!tag=去广告 发现精彩
 #!system=iOS iPadOS
 #!system_version=15
