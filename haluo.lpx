@@ -1,7 +1,7 @@
 #!name=哈啰出行去挑战赛
 #!desc=去除哈啰出行App首页的挑战赛/勋章模块\n使用正则重写API响应，清空挑战赛数据
-#!author=您的名称
-#!icon=https://raw.githubusercontent.com/icon.png
+#!author=
+#!icon=
 #!system=iOS, iPadOS
 #!loon_version=3.2.1
 #!date=2024-01-08
