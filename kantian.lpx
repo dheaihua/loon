@@ -2,6 +2,5 @@
 #看天VIP
 ^https:\/\/kantianapi\.geovisearth\.com\/v2\/user\/(ssoLogin$|((mine|guest\/info)\/query\?)) response-body-json-replace msg.isVip 1 msg.isLifeVip null msg.vipStart 2025-09-13 msg.vipEnd 2999-12-31
 
-
-[hostname]
-kantianapi.geovisearth.com
+[MitM]
+hostname = kantianapi.geovisearth.com
