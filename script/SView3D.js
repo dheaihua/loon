@@ -59,7 +59,7 @@ try {
     }];
     
     // ========== 用户信息增强 ==========
-    u.nickName = "VIP用户_" + Date.now().toString().slice(-6);
+    u.nickName = "超级🐂🍺会员" + Date.now().toString().slice(-6);
     u.photo = "http://service.sview3d.com:80/data/upload/userphotofile/default/vip_icon.jpg";
     u.country = "CN";
     u.lang = "zh";
