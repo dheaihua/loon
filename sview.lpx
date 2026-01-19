@@ -1,14 +1,6 @@
 #!name=SView3D-会员状态解锁
 #!date=2026-01-19
 
-[Argument]
-
-[General]
-
-[Rule]
-
-[Rewrite]
-
 [Script]
 http-response ^https?://gateway\.sview3d\.com/admin/personal/info script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/SView3D.js, requires-body=true, timeout=10, tag=SV3D会员解锁, enabled=true
 [MitM]
