@@ -1,7 +1,3 @@
-// 名称: SV3D会员解锁
-// 作者: YourName
-// 描述: 解锁SV3D会员功能
-// 版本: 1.0.0
 
 let body = $response.body;
 
