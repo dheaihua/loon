@@ -1,10 +1,4 @@
 #!name=SView3D-会员状态解锁
-#!desc=
-#!author=
-#!tag=会员解锁 测试
-#!system=iOS iPadOS
-#!system_version=15
-#!loon_version=3.2.1
 #!date=2026-01-19
 
 [Argument]
