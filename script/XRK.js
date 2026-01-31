@@ -1,65 +1,130 @@
-// 向日葵用户信息解锁脚本 (增强调试版)
-console.log("[SunloginDebug] === 脚本开始 ===");
+
+// ========== 向日葵全接口解锁脚本 (最终整合版) ==========
+// 支持接口：
+// 1. 用户信息接口：https://slapi.oray.net/passport/me
+// 2. 功能权限接口：https://sl-api.oray.com/client/services
+// 3. 用户中心接口：https://user-api-v2.oray.com/users/
+
+console.log("[SunloginAll] === 脚本开始 ===");
+console.log("[SunloginAll] 请求URL: " + $request.url);
+
+// 安全检查
+if (!$response.body) {
+    console.log("[SunloginAll] ⚠️ 响应体为空，跳过处理");
+    $done({});
+}
 
 let body = $response.body;
-console.log("[SunloginDebug] 原始响应长度: " + body.length);
-console.log("[SunloginDebug] 原始响应预览: " + body.substring(0, 200) + "...");
+console.log("[SunloginAll] 原始响应长度: " + body.length);
+console.log("[SunloginAll] 原始响应预览: " + body.substring(0, 200) + "...");
 
 try {
     let obj = JSON.parse(body);
-    console.log("[SunloginDebug] JSON解析成功");
+    console.log("[SunloginAll] ✅ JSON解析成功");
     
-    // === 关键调试：打印完整的原始数据结构 ===
-    console.log("[SunloginDebug] 完整原始对象: " + JSON.stringify(obj));
+    // 打印完整原始对象用于调试
+    console.log("[SunloginAll] 完整原始对象: " + JSON.stringify(obj));
     
-    // 检查响应的整体结构
-    if (obj) {
-        console.log("[SunloginDebug] 对象存在，检查 code 和 data...");
-        console.log("[SunloginDebug] obj.code = " + obj.code);
-        console.log("[SunloginDebug] obj.data 类型: " + (typeof obj.data));
+    let modified = false;
+    let requestUrl = $request.url;
+    
+    // ===== 情况1：用户信息接口 (passport/me) =====
+    if (requestUrl.indexOf('/passport/me') !== -1) {
+        console.log("[SunloginAll] 🎯 识别为用户信息接口");
         
-        if (obj.data) {
-            console.log("[SunloginDebug] obj.data 内容: " + JSON.stringify(obj.data));
-            // 特别检查 gradename 字段
-            console.log("[SunloginDebug] 原始 obj.data.gradename = " + obj.data.gradename);
-            console.log("[SunloginDebug] 原始 obj.data.servicename = " + obj.data.servicename);
-        } else {
-            console.log("[SunloginDebug] 警告：obj.data 为 null 或 undefined！");
+        if (obj && obj.code === 0 && obj.data) {
+            console.log("[SunloginAll] 原始数据 -> 等级: " + obj.data.gradename + 
+                       ", 服务名: " + obj.data.servicename);
+            
+            // 核心修改
+            obj.data.gradename = "vip";
+            obj.data.servicename = "VIP会员";
+            obj.data.issubscribe = 1;
+            
+            // 增强字段修改
+            if (obj.data.sysexpiredate !== undefined) {
+                obj.data.sysexpiredate = "2099-12-31";
+            }
+            if (obj.data.amount !== undefined) {
+                obj.data.amount = 99999;
+            }
+            
+            modified = true;
+            console.log("[SunloginAll] ✅ 用户信息修改完成 -> 新等级: " + obj.data.gradename);
+            console.log("[SunloginAll] 修改后完整data: " + JSON.stringify(obj.data));
         }
     }
     
-    // === 核心修改逻辑 ===
-    // 确保是成功的响应且包含data对象
-    if (obj && obj.code === 0 && obj.data) {
-        console.log("[SunloginDebug] ✅ 符合修改条件，开始修改...");
+    // ===== 情况2：功能权限接口 (client/services) =====
+    else if (requestUrl.indexOf('/client/services') !== -1) {
+        console.log("[SunloginAll] 🎯 识别为功能权限接口");
         
-        // 1. 修改界面显示的关键字段
-        // 注意：如果原始gradename为空，这里修改后可能仍需其他字段配合
-        obj.data.gradename = "vip";
-        obj.data.servicename = "VIP会员";
-        
-        // 2. 修改其他关联字段
-        obj.data.issubscribe = 1;
-        if (obj.data.sysexpiredate !== undefined) {
-            obj.data.sysexpiredate = "2099-12-31";
+        if (obj.serviceupgrade) {
+            console.log("[SunloginAll] 原始版本: " + (obj.showversion || "未知"));
+            
+            // 修改账户标识
+            obj.showversion = "vip";
+            obj.gradename = "vip";
+            if (obj.expiredate !== undefined) {
+                obj.expiredate = "2099-12-31";
+            }
+            
+            // 解锁所有高级服务
+            for (let key in obj.serviceupgrade) {
+                obj.serviceupgrade[key] = true;
+            }
+            
+            // 可选：调整基础服务显示
+            if (obj.servicebase) {
+                for (let key in obj.servicebase) {
+                    obj.servicebase[key] = false;
+                }
+            }
+            
+            modified = true;
+            console.log("[SunloginAll] ✅ 高级功能权限已全部开启");
         }
-        obj.data.amount = 99999;
+    }
+    
+    // ===== 情况3：用户中心接口 (users/) =====
+    else if (requestUrl.indexOf('/users/') !== -1) {
+        console.log("[SunloginAll] 🎯 识别为用户中心接口");
         
-        console.log("[SunloginDebug] ✅ 修改完成");
-        console.log("[SunloginDebug] 修改后 gradename = " + obj.data.gradename);
-        console.log("[SunloginDebug] 修改后 servicename = " + obj.data.servicename);
-        console.log("[SunloginDebug] 修改后完整 data: " + JSON.stringify(obj.data));
+        console.log("[SunloginAll] 原始状态 -> ismember: " + obj.ismember + ", grade: " + obj.grade);
         
+        // 核心修改
+        obj.ismember = true;
+        obj.grade = "1";  // 可能 "1" 代表VIP，"2"代表更高级别
+        
+        // 增强修改（可选但推荐）
+        if (obj.accountmode && obj.accountmode.isexperience !== undefined) {
+            obj.accountmode.isexperience = false;
+        }
+        
+        if (obj.isenterprise !== undefined) {
+            obj.isenterprise = 1;
+        }
+        
+        if (obj.balance !== undefined) {
+            obj.balance = 99999;
+        }
+        
+        modified = true;
+        console.log("[SunloginAll] ✅ 用户中心修改完成 -> ismember: " + obj.ismember + ", grade: " + obj.grade);
+    }
+    
+    // ===== 最终处理 =====
+    if (modified) {
+        console.log("[SunloginAll] ✅ 修改完成，返回新数据");
         $done({body: JSON.stringify(obj)});
     } else {
-        console.log("[SunloginDebug] ⚠️ 不符合修改条件，放行原始响应");
-        console.log("[SunloginDebug] 条件检查: obj=" + (obj? "true":"false") + 
-                   ", code=" + obj.code + 
-                   ", data=" + (obj.data? "存在":"null/undefined"));
+        console.log("[SunloginAll] ⚠️ 非目标接口或无需修改，放行原始响应");
         $done({});
     }
+    
 } catch (e) {
-    console.log("[SunloginDebug] ❌ JSON解析异常: " + e.message);
+    console.log("[SunloginAll] ❌ JSON解析异常: " + e.message);
     $done({});
 }
-console.log("[SunloginDebug] === 脚本结束 ===");
+
+console.log("[SunloginAll] === 脚本结束 ===");
