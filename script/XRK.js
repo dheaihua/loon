@@ -26,6 +26,12 @@ try {
         console.log("[SunloginUser] 修改后等级: ", obj.data.gradename);
         console.log("[SunloginUser] 用户信息已更新为VIP");
         
+        // ===== 新增的调试信息 =====
+        // 打印完整的data对象（便于全面检查）
+        console.log("[SunloginUser] 调试：修改后的data对象 => " + JSON.stringify(obj.data));
+        // 同时打印关键字段（便于快速确认）
+        console.log("[SunloginUser] 调试：gradename=" + obj.data.gradename + ", servicename=" + obj.data.servicename);
+        
         $done({body: JSON.stringify(obj)});
     } else {
         console.log("[SunloginUser] 响应格式不符，放行");
