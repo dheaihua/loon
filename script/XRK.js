@@ -1,45 +1,39 @@
-// 向日葵VIP解锁脚本 - 安全处理版
-console.log("[SunloginVIP] 脚本触发，URL: " + $request.url);
 
-// 安全检查：如果响应体为空或undefined，直接放行
-if (!$response.body || $response.body.length === 0) {
-    console.log("[SunloginVIP] 警告：响应体为空，跳过处理。响应头:", JSON.stringify($response.headers));
-    $done({});
-}
+// 向日葵用户信息解锁脚本 (针对 passport/me 接口)
+// 匹配URL: https://slapi.oray.net/passport/me
 
+console.log(“[SunloginUser] 用户信息接口拦截成功”);
+
+let body = $response.body;
 try {
-    let obj = JSON.parse($response.body);
-    console.log("[SunloginVIP] 原始JSON数据解析成功");
+    let obj = JSON.parse(body);
     
-    // --- 核心修改逻辑（基于您最初提供的有效JSON结构）---
-    // 1. 修改账户标识
-    obj.showversion = "vip";
-    obj.gradename = "vip";
-    if (obj.expiredate !== undefined) {
-        obj.expiredate = "2099-12-31";
-    }
-    
-    // 2. 解锁所有高级服务 (serviceupgrade)
-    if (obj.serviceupgrade) {
-        for (let key in obj.serviceupgrade) {
-            obj.serviceupgrade[key] = true;
+    // 确保是成功的响应且包含data对象
+    if (obj && obj.code === 0 && obj.data) {
+        console.log(“[SunloginUser] 原始等级: ”, obj.data.gradename);
+        
+        // === 核心修改 ===
+        // 1. 修改界面显示的关键字段
+        obj.data.gradename = “vip”;           // 账户等级
+        obj.data.servicename = “VIP会员”;     // 服务名称
+        
+        // 2. 修改其他关联字段，使状态更完整（可选但推荐）
+        obj.data.issubscribe = 1;             // 标记为已订阅
+        if (obj.data.sysexpiredate !== undefined) {
+            obj.data.sysexpiredate = “2099-12-31”; // 系统到期时间
         }
-        console.log("[SunloginVIP] 已解锁所有serviceupgrade高级权限");
+        obj.data.amount = 99999;              // 余额，避免显示-1
+        
+        console.log(“[SunloginUser] 修改后等级: ”, obj.data.gradename);
+        console.log(“[SunloginUser] 用户信息已更新为VIP”);
+        
+        $done({body: JSON.stringify(obj)});
+    } else {
+        // 如果不是目标数据结构，则放行
+        console.log(“[SunloginUser] 响应格式不符，放行”);
+        $done({});
     }
-    
-    // 3. 可选：降级基础服务 (servicebase)，使对比更明显
-    if (obj.servicebase) {
-        for (let key in obj.servicebase) {
-            obj.servicebase[key] = false;
-        }
-        console.log("[SunloginVIP] 已重置servicebase基础权限");
-    }
-    
-    console.log("[SunloginVIP] 修改完成，返回新数据");
-    $done({body: JSON.stringify(obj)});
-    
 } catch (e) {
-    console.log("[SunloginVIP] 处理异常: " + e.message);
-    console.log("[SunloginVIP] 异常响应体预览:", $response.body.substring(0, 300));
+    console.log(“[SunloginUser] 处理异常: ” + e.message);
     $done({});
 }
