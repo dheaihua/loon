@@ -1,7 +1,8 @@
 [MITM]
 # 添加向日葵API域名
-hostname =  slapi.oray.net
+hostname =  slapi.oray.net, sl-api.oray.com, user-api-v2.oray.com
 
 [Script]
 # 向日葵服务权限解锁脚本
-http-response ^https:\/\/slapi\.oray\.net\/passport\/me script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/XRK.js, requires-body=true, timeout=10, tag=向日葵VIP解锁, enabled=true
+#http-response ^https:\/\/slapi\.oray\.net\/passport\/me script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/XRK.js, requires-body=true, timeout=10, tag=向日葵VIP解锁, enabled=true
+http-response ^https:\/\/(slapi\.oray\.net\/passport\/me|sl-api\.oray\.com\/client\/services|user-api-v2\.oray\.com\/users\/\d+) script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/XRK.js, requires-body=true, tag=向日葵全接口解锁, enabled=true
