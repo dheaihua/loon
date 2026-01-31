@@ -1,56 +1,45 @@
-// 向日葵VIP解锁脚本 - 增强调试版
-console.log("脚本开始执行...");
+// 向日葵VIP解锁脚本 - 安全处理版
+console.log("[SunloginVIP] 脚本触发，URL: " + $request.url);
 
-// 1. 首先检查 $response.body 是否存在及类型
-if (typeof $response === 'undefined') {
-    console.log("错误：$response 对象未定义");
+// 安全检查：如果响应体为空或undefined，直接放行
+if (!$response.body || $response.body.length === 0) {
+    console.log("[SunloginVIP] 警告：响应体为空，跳过处理。响应头:", JSON.stringify($response.headers));
     $done({});
-} else if (typeof $response.body === 'undefined') {
-    console.log("错误：$response.body 未定义，请求可能未被MITM捕获或为空响应");
-    console.log("$response: " + JSON.stringify($response));
-    $done({});
-} else {
-    console.log("获取到响应体，长度：" + $response.body.length);
-    // 打印前500个字符，方便查看原始内容
-    console.log("响应体预览：" + $response.body.substring(0, 500));
+}
+
+try {
+    let obj = JSON.parse($response.body);
+    console.log("[SunloginVIP] 原始JSON数据解析成功");
     
-    let body = $response.body;
-    
-    try {
-        let obj = JSON.parse(body);
-        console.log("JSON解析成功，开始修改...");
-        
-        // --- 以下是修改逻辑 ---
-        // 修改版本标识
-        obj.showversion = "vip";
-        obj.gradename = "vip";
-        if (obj.expiredate !== undefined) {
-            obj.expiredate = "2099-12-31";
-        }
-        
-        // 核心：解锁所有高级服务
-        if (obj.serviceupgrade) {
-            for (let key in obj.serviceupgrade) {
-                obj.serviceupgrade[key] = true; // 所有功能设为true
-            }
-            console.log("serviceupgrade 所有权限已开启");
-        }
-        
-        // 可选：调整基础服务，保持原样或做相应改变
-        // if (obj.servicebase) {
-        //     for (let key in obj.servicebase) {
-        //         obj.servicebase[key] = false; // 或保持原逻辑
-        //     }
-        // }
-        
-        console.log("修改完成，准备返回新数据");
-        $done({body: JSON.stringify(obj)});
-        
-    } catch (parseError) {
-        // 捕获解析错误，并给出更具体的错误信息
-        console.log("JSON解析失败！详细错误：" + parseError.message);
-        console.log("出错的响应体开头是：" + body.substring(0, 200));
-        // 出错时返回原响应，避免导致客户端异常
-        $done({body: body});
+    // --- 核心修改逻辑（基于您最初提供的有效JSON结构）---
+    // 1. 修改账户标识
+    obj.showversion = "vip";
+    obj.gradename = "vip";
+    if (obj.expiredate !== undefined) {
+        obj.expiredate = "2099-12-31";
     }
+    
+    // 2. 解锁所有高级服务 (serviceupgrade)
+    if (obj.serviceupgrade) {
+        for (let key in obj.serviceupgrade) {
+            obj.serviceupgrade[key] = true;
+        }
+        console.log("[SunloginVIP] 已解锁所有serviceupgrade高级权限");
+    }
+    
+    // 3. 可选：降级基础服务 (servicebase)，使对比更明显
+    if (obj.servicebase) {
+        for (let key in obj.servicebase) {
+            obj.servicebase[key] = false;
+        }
+        console.log("[SunloginVIP] 已重置servicebase基础权限");
+    }
+    
+    console.log("[SunloginVIP] 修改完成，返回新数据");
+    $done({body: JSON.stringify(obj)});
+    
+} catch (e) {
+    console.log("[SunloginVIP] 处理异常: " + e.message);
+    console.log("[SunloginVIP] 异常响应体预览:", $response.body.substring(0, 300));
+    $done({});
 }
