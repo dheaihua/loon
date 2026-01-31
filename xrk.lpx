@@ -3,5 +3,5 @@
 hostname = sl-api.oray.com, slapi.oray.net, user-api-v2.oray.com
 
 [Script]
-# 向日葵四接口终极解锁
-http-response ^https:\/\/(slapi\.oray\.net\/(passport\/me|image\/list)|sl-api\.oray\.com\/client\/services|user-api-v2\.oray\.com\/users\/\d+) script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/XRK.js, requires-body=true, timeout=10, tag=向日葵终极解锁, enabled=true
+# 向日葵四接口终极解锁（修正版）
+http-response ^https:\/\/(slapi\.oray\.net\/(passport\/me|image\/list.*)|sl-api\.oray\.com\/client\/services|user-api-v2\.oray\.com\/users\/[0-9]+) script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/XRK.js, requires-body=true, timeout=10, tag=向日葵四接口解锁, enabled=true
