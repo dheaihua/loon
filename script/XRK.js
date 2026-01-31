@@ -1,60 +1,56 @@
-// 向日葵远程控制VIP解锁脚本
-// 匹配URL: https://sl-api.oray.com/client/services
+// 向日葵VIP解锁脚本 - 增强调试版
+console.log("脚本开始执行...");
 
-let body = $response.body;
-
-try {
-  let obj = JSON.parse(body);
-  
-  console.log("向日葵服务权限API拦截成功");
-  
-  // 1. 修改账户版本和等级标识
-  obj.showversion = "vip";      // 显示版本改为VIP
-  obj.gradename = "vip";        // 等级名称改为VIP
-  obj.expiredate = "2099-12-31"; // 设置长期有效期
-  
-  // 2. 核心：权限交换与升级
-  // 将servicebase的所有基础权限(true)转移给serviceupgrade
-  // 将serviceupgrade的所有高级权限(false)转移给servicebase
-  let tempService = {};
-  
-  // 复制servicebase的权限结构
-  for (let key in obj.servicebase) {
-    if (obj.servicebase.hasOwnProperty(key)) {
-      // 基础权限中原本为true的功能，在高级权限中也设为true
-      tempService[key] = true;
+// 1. 首先检查 $response.body 是否存在及类型
+if (typeof $response === 'undefined') {
+    console.log("错误：$response 对象未定义");
+    $done({});
+} else if (typeof $response.body === 'undefined') {
+    console.log("错误：$response.body 未定义，请求可能未被MITM捕获或为空响应");
+    console.log("$response: " + JSON.stringify($response));
+    $done({});
+} else {
+    console.log("获取到响应体，长度：" + $response.body.length);
+    // 打印前500个字符，方便查看原始内容
+    console.log("响应体预览：" + $response.body.substring(0, 500));
+    
+    let body = $response.body;
+    
+    try {
+        let obj = JSON.parse(body);
+        console.log("JSON解析成功，开始修改...");
+        
+        // --- 以下是修改逻辑 ---
+        // 修改版本标识
+        obj.showversion = "vip";
+        obj.gradename = "vip";
+        if (obj.expiredate !== undefined) {
+            obj.expiredate = "2099-12-31";
+        }
+        
+        // 核心：解锁所有高级服务
+        if (obj.serviceupgrade) {
+            for (let key in obj.serviceupgrade) {
+                obj.serviceupgrade[key] = true; // 所有功能设为true
+            }
+            console.log("serviceupgrade 所有权限已开启");
+        }
+        
+        // 可选：调整基础服务，保持原样或做相应改变
+        // if (obj.servicebase) {
+        //     for (let key in obj.servicebase) {
+        //         obj.servicebase[key] = false; // 或保持原逻辑
+        //     }
+        // }
+        
+        console.log("修改完成，准备返回新数据");
+        $done({body: JSON.stringify(obj)});
+        
+    } catch (parseError) {
+        // 捕获解析错误，并给出更具体的错误信息
+        console.log("JSON解析失败！详细错误：" + parseError.message);
+        console.log("出错的响应体开头是：" + body.substring(0, 200));
+        // 出错时返回原响应，避免导致客户端异常
+        $done({body: body});
     }
-  }
-  
-  // 复制serviceupgrade的权限结构作为新的基础权限
-  let newBaseService = {};
-  for (let key in obj.serviceupgrade) {
-    if (obj.serviceupgrade.hasOwnProperty(key)) {
-      // 高级权限中原本为false的功能，在基础权限中也设为false
-      newBaseService[key] = false;
-    }
-  }
-  
-  // 应用修改
-  obj.serviceupgrade = tempService;    // 高级服务：全部开启
-  obj.servicebase = newBaseService;    // 基础服务：保持原有高级服务的状态
-  
-  // 3. 设置用户远程权限为高级
-  obj.userremote = 2; // 可能1是基础，2是高级，根据实际情况调整
-  
-  // 4. 修改升级相关按钮显示
-  if (obj.upgradebtntype === "buy") {
-    obj.upgradebtntype = "renew"; // 将"购买"改为"续费"
-  }
-  
-  console.log("账户状态: " + obj.gradename);
-  console.log("到期时间: " + obj.expiredate);
-  console.log("远程控制权限: " + (obj.serviceupgrade.remote ? "高级" : "基础"));
-  console.log("文件传输权限: " + (obj.serviceupgrade.filemgr ? "开启" : "关闭"));
-  
-  $done({body: JSON.stringify(obj)});
-  
-} catch (e) {
-  console.log("向日葵权限修改失败: " + e.message);
-  $done({body: body}); // 出错时返回原始响应
 }
