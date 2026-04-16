@@ -1,6 +1,0 @@
-[Script]
-http-response ^https:\/\/plouto-appsource\.oss-cn-hangzhou\.aliyuncs\.com\/app-hello\/tabbarConfig\/.*\/baseConfig\.json script-path=https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/script/hello.js,  requires-body=true, timeout=10, tag=heluo, enabled=true
-
-
-[MITM]
-hostname = %APPEND% plouto-appsource.oss-cn-hangzhou.aliyuncs.com
