@@ -1,0 +1,6 @@
+[Script]
+http-response ^https:\/\/plouto-appsource\.oss-cn-hangzhou\.aliyuncs\.com\/app-hello\/tabbarConfig\/.*\/baseConfig\.json script-path=hellobike.js, requires-body=true, timeout=10, tag=哈啰精简
+
+
+[MITM]
+hostname = %APPEND% plouto-appsource.oss-cn-hangzhou.aliyuncs.com
