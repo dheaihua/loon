@@ -137,25 +137,25 @@ policy_groups:
     type: auto_test
     urls:
     - 良心
-    - https://sub.store/download/%E8%89%AF%E5%BF%83?target=Egern
-    - https://liangxin.xyz/api/v1/liangxin?OwO=9c38a08ce52629564bd9720db5a1058b
+    - 
+    - 
     - 赔钱
-    - https://sub.store/download/%E8%B5%94%E9%92%B1?target=Egern
-    - https://dasho.pqjc.site/api/v1/pq/b7018c5f1930a5b2de3091326e54da79
+    - 
+    - 
     urls_disabled:
     - 良心
-    - https://sub.store/download/%E8%89%AF%E5%BF%83?target=Egern
+    - 
     - 赔钱
-    - https://sub.store/download/%E8%B5%94%E9%92%B1?target=Egern
-    icon: https://www.imgccc.com/2026/02/24/f5778059f6901.png
+    - 
+    icon: 
     hidden: true
 - external:
     name: 守候
     type: select
     urls:
-    - https://liangxin.xyz/api/v1/liangxin?OwO=9c38a08ce52629564bd9720db5a1058b
+    - 
     urls_disabled:
-    - https://liangxin.xyz/api/v1/liangxin?OwO=9c38a08ce52629564bd9720db5a1058b
+    - 
     icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Final.png
     hidden: true
 - select:
@@ -1830,14 +1830,14 @@ scriptings:
     name: 和风天气小组件
     script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/Weather_Widget.JS
     env:
-      KEY: 083a32d6370643da8eb512e88b7db39c
-      API_HOST: nd76x9vmgj.re.qweatherapi.com
-      LOCATION: 佛山
+      KEY: 
+      API_HOST: 
+      LOCATION: 
 - generic:
     name: 南方电网
     script_url: https://raw.githubusercontent.com/daiersee/egern/refs/heads/main/rule/%E5%8D%97%E6%96%B9%E7%94%B5%E7%BD%91%E5%B0%8F%E7%BB%84%E4%BB%B6.JS
     env:
-      Token: AE828BB93398DE342A2E0D5177554D17
+      Token: 
 - generic:
     name: 机场订阅小组件
     script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/Sub_Widget.JS
@@ -1846,9 +1846,8 @@ scriptings:
     name: 中国联通小组件
     script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/Unicom_Widget.JS
     env:
-      手机号: '17665734410'
-      cookie: ecs_token=eyJkYXRhIjoiOGJkZWI5NmJhNmVmZGY1NzdmNWU5MGIyN2M1MjEwNjAwNDM3ODU1MTg4ZjBjNDkwYjhkOWNhZGRhYjU0ZDJmZjZkYmZjNTI4NWIzY2I4Yjk5ZThjNGFkYjgwYTVjODZjODg4OGQ5YmI5ZWMwYTUxNTE0YWQzOTE0NGE0MGU4MTE2YWRjMzY1OWUxOTEzNWE4ODVkOWYwODBmM2U3ZjlmYjM4YzJmY2Y5NDBkNWI4ZTc0OTVjN2U1MjI4ZDA0MDczMzdjNDdlMDA1YTNjNDk3MWNmYWU4ZjE1YjhhODA0OTY5YTg4NDliZWZiY2UyNmU1MjM2MDM4N2Y5OTRmMWU2ODVlMDMzOWFmZThlYjhkYmEzMzliNGMwN2RjZTNjZGU1NGQ1ODNiMjc1NDkzNmRlN2E2NTdjNzRhMDFiZGM0MzM4N2FhZmY5NGI2MmZhZjExZTk4MGYzNjMzNGZlYWEwMDc0NDE2MTVkMjBkMjFmNzhlNGE4ZTY5Zjc2ZjY0MDcxNTAxZTIzOWI2ZGRiYzQ2Y2JlYWJhOTU2MTk4ZmRlMjhhNDQ2NDUxNDE2YTExNzI1NjMxMjBlMGRkMjA0NGZlZCIsInZlcnNpb24iOiIwMCJ9;t3_token=e74ebf774741a257bac3be6715303b77;PvSessionId=2026061417453767749B08-AAB1-414C-B1F5-A652C842879A;devicedId=67749B08-AAB1-414C-B1F5-A652C842879A;cw_mutual=7064d003eb3c8934e769e430ecf3d64a4143f52cc9d25312d6d83ae8af6aae882d8f2c4539717062f810d396f2b0f7b41a4f3319e73f575d0bb8439dd37a8ecb;login_type=06;c_mobile=17665734410;c_id=e541b3328c334a2ecaadaa06334bb25695dc52318cfe3d9d55e58a72de62e985;u_areaCode=;c_version=iphone_c@12.1200;channel=GGPD;wo_family=0;u_account=17665734410;city=051|510|91413585|-99;invalid_at=047011cba72e527f9f74dc9c3ac1349e72a006e35fa23d1922e6e283fe9e06e2;ecs_acc=lKkg5P6P9b2Z7SOnM8R9kofEoNtKV7erQmx96pgZuY1l1/mAVxSLJ39nXIALjcgfdO+3OONzEYfi3bIRzmFOJ1qj7g8XQXs2s2wLf882ANpA7Cyl8dolV0vgzjSNnM8MWq0veDHcCHShonjOA1Wwg8cZMpxrnKF/RSAXJYX67D0=;random_login=0;enc_acc=lKkg5P6P9b2Z7SOnM8R9kofEoNtKV7erQmx96pgZuY1l1/mAVxSLJ39nXIALjcgfdO+3OONzEYfi3bIRzmFOJ1qj7g8XQXs2s2wLf882ANpA7Cyl8dolV0vgzjSNnM8MWq0veDHcCHShonjOA1Wwg8cZMpxrnKF/RSAXJYX67D0=;third_token=eyJkYXRhIjoiOGJkZWI5NmJhNmVmZGY1NzdmNWU5MGIyN2M1MjEwNjAwNDM3ODU1MTg4ZjBjNDkwYjhkOWNhZGRhYjU0ZDJmZjZkYmZjNTI4NWIzY2I4Yjk5ZThjNGFkYjgwYTVjODZjOGVhNzYyZDljNDM2YTYyZWFlM2Y1N2ZkODZmODM3Y2JhMWI2YWNkZTY5YTMwYzM5MDc1MzhlYWExNGNiNDg3MCIsInZlcnNpb24iOiIwMCJ9;
-- generic:
+      手机号: ''
+      cookie:
     name: 中国电信小组件
     script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/CT_Widget.JS
 - generic:
@@ -1920,7 +1919,7 @@ scriptings:
     name: 南方电网小组件
     script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/CSG_Widget.JS
     env:
-      Token: B227F78A007839C5D4E7AC7218564A44
+      Token: 
     disabled: true
 - schedule:
     name: 珠宝 CBD
@@ -1957,9 +1956,9 @@ widgets:
   script_name: 机场订阅小组件
   env:
     NAME1: 赔钱
-    URL1: https://dash.xn--cp3a08l.com/api/v1/pq/b7018c5f1930a5b2de3091326e54da79
+    URL1: 
     NAME2: 良心
-    URL2: https://liangxin.xyz/api/v1/liangxin?OwO=9c38a08ce52629564bd9720db5a1058b
+    URL2: 
 - name: 虚拟货币
   script_name: 虚拟币小组件
   env:
