@@ -133,11 +133,30 @@ dns:
   - https://dns.google/dns-query
 policy_groups:
 - external:
-    name: 机场订阅
+    name: ✈️
+    type: auto_test
+    urls:
+    - 良心
+    - https://sub.store/download/%E8%89%AF%E5%BF%83?target=Egern
+    - https://liangxin.xyz/api/v1/liangxin?OwO=9c38a08ce52629564bd9720db5a1058b
+    - 赔钱
+    - https://sub.store/download/%E8%B5%94%E9%92%B1?target=Egern
+    - https://dasho.pqjc.site/api/v1/pq/b7018c5f1930a5b2de3091326e54da79
+    urls_disabled:
+    - 良心
+    - https://sub.store/download/%E8%89%AF%E5%BF%83?target=Egern
+    - 赔钱
+    - https://sub.store/download/%E8%B5%94%E9%92%B1?target=Egern
+    icon: https://www.imgccc.com/2026/02/24/f5778059f6901.png
+    hidden: true
+- external:
+    name: 守候
     type: select
     urls:
-    - 这里添加进你的订阅地址
-    block_quic: true
+    - https://liangxin.xyz/api/v1/liangxin?OwO=9c38a08ce52629564bd9720db5a1058b
+    urls_disabled:
+    - https://liangxin.xyz/api/v1/liangxin?OwO=9c38a08ce52629564bd9720db5a1058b
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Final.png
     hidden: true
 - select:
     name: iBL3ND
@@ -1925,91 +1944,315 @@ rules:
 - default:
     policy: iBL3ND
 scriptings:
-- schedule:
-    name: TestFlight监控
-    cron: '* * * * * ?'
-    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/TestFlight.js
+- generic:
+    name: 网络信息
+    script_url: https://raw.githubusercontent.com/lylywayr/NetWork-Module/refs/heads/main/Egern/%E7%BD%91%E7%BB%9C%E8%AF%8A%E6%96%AD%E9%9B%B7%E8%BE%BE/%E7%BD%91%E7%BB%9C%E8%AF%8A%E6%96%AD%E9%9B%B7%E8%BE%BE.js
     env:
-      TF: PpJMnnTY
-    timeout: 120
+      AI: Ai_Tk
+- schedule:
+    name: pingme签到
+    cron: 28 */3 * * *
+    script_url: https://raw.githubusercontent.com/158212892/QuantumultXMark/refs/heads/main/My/Scripts/PingMe_task.js
+    timeout: 60
     disabled: true
+- generic:
+    name: 倒计时
+    script_url: https://raw.githubusercontent.com/unknowntokyo/surge-list/refs/heads/master/Egern/Countdown.js
+- generic:
+    name: NetUnlock
+    script_url: https://raw.githubusercontent.com/Nullwhy/Egern/refs/heads/main/Scripts/NetUnlock.js
+- generic:
+    name: 数据中心
+    script_url: https://raw.githubusercontent.com/magicdan3688/MyProxyScripts/refs/heads/main/ip-dch.js
+- generic:
+    name: 壁纸
+    script_url: https://raw.githubusercontent.com/Linsars/Surge/main/JS/egern-bag.js
+- generic:
+    name: 黄历
+    script_url: https://ghproxy.net/https://raw.githubusercontent.com/xcgtb/Egern-Widgets/main/HL.js
 - generic:
     name: 和风天气小组件
     script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/Weather_Widget.JS
-    timeout: 120
+    env:
+      KEY: 083a32d6370643da8eb512e88b7db39c
+      API_HOST: nd76x9vmgj.re.qweatherapi.com
+      LOCATION: 佛山
+- generic:
+    name: 南方电网
+    script_url: https://raw.githubusercontent.com/daiersee/egern/refs/heads/main/rule/%E5%8D%97%E6%96%B9%E7%94%B5%E7%BD%91%E5%B0%8F%E7%BB%84%E4%BB%B6.JS
+    env:
+      Token: AE828BB93398DE342A2E0D5177554D17
 - generic:
     name: 机场订阅小组件
     script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/Sub_Widget.JS
-    timeout: 120
+    update_interval: 86400
 - generic:
-    name: 万年历小组件
-    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/CN_Cal.JS
+    name: 中国联通小组件
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/Unicom_Widget.JS
+    env:
+      手机号: '17665734410'
+      cookie: ecs_token=eyJkYXRhIjoiOGJkZWI5NmJhNmVmZGY1NzdmNWU5MGIyN2M1MjEwNjAwNDM3ODU1MTg4ZjBjNDkwYjhkOWNhZGRhYjU0ZDJmZjZkYmZjNTI4NWIzY2I4Yjk5ZThjNGFkYjgwYTVjODZjODg4OGQ5YmI5ZWMwYTUxNTE0YWQzOTE0NGE0MGU4MTE2YWRjMzY1OWUxOTEzNWE4ODVkOWYwODBmM2U3ZjlmYjM4YzJmY2Y5NDBkNWI4ZTc0OTVjN2U1MjI4ZDA0MDczMzdjNDdlMDA1YTNjNDk3MWNmYWU4ZjE1YjhhODA0OTY5YTg4NDliZWZiY2UyNmU1MjM2MDM4N2Y5OTRmMWU2ODVlMDMzOWFmZThlYjhkYmEzMzliNGMwN2RjZTNjZGU1NGQ1ODNiMjc1NDkzNmRlN2E2NTdjNzRhMDFiZGM0MzM4N2FhZmY5NGI2MmZhZjExZTk4MGYzNjMzNGZlYWEwMDc0NDE2MTVkMjBkMjFmNzhlNGE4ZTY5Zjc2ZjY0MDcxNTAxZTIzOWI2ZGRiYzQ2Y2JlYWJhOTU2MTk4ZmRlMjhhNDQ2NDUxNDE2YTExNzI1NjMxMjBlMGRkMjA0NGZlZCIsInZlcnNpb24iOiIwMCJ9;t3_token=e74ebf774741a257bac3be6715303b77;PvSessionId=2026061417453767749B08-AAB1-414C-B1F5-A652C842879A;devicedId=67749B08-AAB1-414C-B1F5-A652C842879A;cw_mutual=7064d003eb3c8934e769e430ecf3d64a4143f52cc9d25312d6d83ae8af6aae882d8f2c4539717062f810d396f2b0f7b41a4f3319e73f575d0bb8439dd37a8ecb;login_type=06;c_mobile=17665734410;c_id=e541b3328c334a2ecaadaa06334bb25695dc52318cfe3d9d55e58a72de62e985;u_areaCode=;c_version=iphone_c@12.1200;channel=GGPD;wo_family=0;u_account=17665734410;city=051|510|91413585|-99;invalid_at=047011cba72e527f9f74dc9c3ac1349e72a006e35fa23d1922e6e283fe9e06e2;ecs_acc=lKkg5P6P9b2Z7SOnM8R9kofEoNtKV7erQmx96pgZuY1l1/mAVxSLJ39nXIALjcgfdO+3OONzEYfi3bIRzmFOJ1qj7g8XQXs2s2wLf882ANpA7Cyl8dolV0vgzjSNnM8MWq0veDHcCHShonjOA1Wwg8cZMpxrnKF/RSAXJYX67D0=;random_login=0;enc_acc=lKkg5P6P9b2Z7SOnM8R9kofEoNtKV7erQmx96pgZuY1l1/mAVxSLJ39nXIALjcgfdO+3OONzEYfi3bIRzmFOJ1qj7g8XQXs2s2wLf882ANpA7Cyl8dolV0vgzjSNnM8MWq0veDHcCHShonjOA1Wwg8cZMpxrnKF/RSAXJYX67D0=;third_token=eyJkYXRhIjoiOGJkZWI5NmJhNmVmZGY1NzdmNWU5MGIyN2M1MjEwNjAwNDM3ODU1MTg4ZjBjNDkwYjhkOWNhZGRhYjU0ZDJmZjZkYmZjNTI4NWIzY2I4Yjk5ZThjNGFkYjgwYTVjODZjOGVhNzYyZDljNDM2YTYyZWFlM2Y1N2ZkODZmODM3Y2JhMWI2YWNkZTY5YTMwYzM5MDc1MzhlYWExNGNiNDg3MCIsInZlcnNpb24iOiIwMCJ9;
 - generic:
-    name: 节日倒计时小组件
-    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/Holiday_Countdown.js
+    name: 中国电信小组件
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/CT_Widget.JS
 - generic:
-    name: 油价查询小组件
-    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/Oil_Widget.JS
+    name: 中国广电小组件
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/CBN_Widget.JS
 - generic:
-    name: 虚拟货币小组件
+    name: 虚拟币小组件
     script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/Crypto_Widget.JS
 - generic:
     name: 彩票开奖小组件
     script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/Lottery-Widget.JS
 - generic:
+    name: 限免小组件
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/App_Store_Widget.JS
+- generic:
+    name: 黄金小组件
+    script_url: https://raw.githubusercontent.com/Revicess/Egern/refs/heads/master/widget/Gold_XAU.js
+- generic:
+    name: 网络信息小组件
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/Net_Info.JS
+- generic:
+    name: 测试网络下载小组件
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/NetSpeed_Widget.JS
+    timeout: 60
+- generic:
+    name: IP纯净度小组件
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/IP_Clean.JS
+- generic:
     name: 网络诊断雷达小组件
     script_url: https://raw.githubusercontent.com/xcgtb/Egern-Widgets/main/Network-Pro.js
 - generic:
-    name: ip数据中心小组件
-    script_url: https://raw.githubusercontent.com/shadowlynx319/Egern/main/ip-dch.js
+    name: IP流媒体解锁查询小组件
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/IP_STR_Widget.JS
 - generic:
-    name: '测试网络下载速度小组件 '
-    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/NetSpeed_Widget.JS
+    name: 代理检测小组件
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/Proxy_Check.JS
+- generic:
+    name: 金价小组件
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/Gold_Widgets.JS
+- generic:
+    name: 油价小组件
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/Oil_Widget.JS
+- generic:
+    name: 今日黄历小组件
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/Almanac_Widget.JS
+- generic:
+    name: 节日倒计时小组件
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/Holiday_Countdown.js
+- generic:
+    name: 万年历小组件
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/CN_Cal.JS
+- generic:
+    name: 汇率看板小组件
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/FX_Rate.JS
+- generic:
+    name: 财联社电报小组件
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/CLS_Widget.JS
+- generic:
+    name: 聚合热搜榜单小组件
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/HSW_Widget.JS
+- schedule:
+    name: TestFlight监控
+    cron: '* * * * * ?'
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/TestFlight.js
+    env:
+      TF: 2dxvn5Sv
+    disabled: true
+- generic:
+    name: 南方电网小组件
+    script_url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/CSG_Widget.JS
+    env:
+      Token: B227F78A007839C5D4E7AC7218564A44
+    disabled: true
+- schedule:
+    name: 珠宝 CBD
+    cron: 28 10 * * *
+    script_url: qiandao.js
+    disabled: true
 mitm:
   ca_p12: egern.p12
   ca_passphrase: egern
 widgets:
-- name: 测试网络下载速度
-  script_name: '测试网络下载速度小组件 '
-- name: 机场订阅
-  script_name: 机场订阅小组件
-- name: 虚拟货币
-  script_name: 虚拟货币小组件
-- name: 油价查询
-  script_name: 油价查询小组件
+- name: 网络雷达
+  script_name: 网络信息
+- name: 数据分析
+  script_name: NetUnlock
+- name: 倒计时
+  script_name: 倒计时
+- name: 数据中心
+  script_name: 数据中心
+- name: 网络
+  script_name: 测试网络下载小组件
+- name: 壁纸
+  script_name: 壁纸
+- name: 黄历
+  script_name: 黄历
+- name: 和风
+  script_name: 和风天气小组件
+- name: 金价
+  script_name: 金价小组件
 - name: 彩票开奖
   script_name: 彩票开奖小组件
-- name: 节日倒计时
-  script_name: 节日倒计时小组件
+  env:
+    彩票类型: 双色球
+- name: 🐔场
+  script_name: 机场订阅小组件
+  env:
+    NAME1: 赔钱
+    URL1: https://dash.xn--cp3a08l.com/api/v1/pq/b7018c5f1930a5b2de3091326e54da79
+    NAME2: 良心
+    URL2: https://liangxin.xyz/api/v1/liangxin?OwO=9c38a08ce52629564bd9720db5a1058b
+- name: 虚拟货币
+  script_name: 虚拟币小组件
+  env:
+    btcType: BTC,ETH,BNB
+- name: 油价组件
+  script_name: 油价小组件
+  env:
+    region: guangdong/foshan
+- name: 热搜组件
+  script_name: 聚合热搜榜单小组件
 - name: 万年历
   script_name: 万年历小组件
-- name: IP数据中心
-  script_name: ip数据中心小组件
-- name: 网络诊断雷达
-  script_name: 网络诊断雷达小组件
+- name: 黄金
+  script_name: 黄金小组件
+  env:
+    KLT: '60'
 modules:
+- url: https://kelee.one/Tool/Loon/Lpx/BlockAdvertisers.lpx
+  enabled: true
+- url: https://kelee.one/Tool/Loon/Lpx/Block_HTTPDNS.lpx
+  enabled: true
+- url: http://script.hub/file/_start_/https://ddgksf2013.top/rewrite/StartUpAds.conf/_end_/StartUpAds.sgmodule?type=qx-rewrite&n=%E5%A2%A8%E9%B1%BC%E5%8E%BB%E5%BC%80%E5%B1%8F2.0%E5%8E%BB%E5%B9%BF%E5%91%8A%40ddgksf2013+%E5%B7%B2%E6%8A%93%E5%8C%85400%E4%BD%99%E5%BA%94%E7%94%A8%E5%8E%BB%E5%BC%80%E5%B1%8F&headers=User-Agent:surge&del=true&jqEnabled=true&target=surge-module&category=ddgksf2013
+  enabled: true
+- url: https://yfamilys.com/module/adultraplus.sgmodule
+  enabled: true
+- url: http://script.hub/file/_start_/https://ddgksf2013.top/rewrite/StartUpAds.conf/_end_/StartUpAds.sgmodule?type=qx-rewrite&headers=User-Agent:surge&del=true&jqEnabled=true&target=surge-module
+  enabled: true
+- url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/User-Agent.yaml
+  enabled: true
+- name: '429'
+  url: https://raw.githubusercontent.com/githubdulong/Script/master/Surge/Github_Private.sgmodule
+  enabled: true
+- url: https://raw.githubusercontent.com/salem-2007/apple-cert-block/main/AntiRevoke.plugin
+  enabled: true
+- url: https://raw.githubusercontent.com/mieqq/mieqq/master/skip-proxy-lists.sgmodule
+  enabled: true
 - url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/Telegram.yaml
   env:
     CLIENT: Telegram
   enabled: true
-- url: https://raw.githubusercontent.com/Maasea/sgmodule/master/YouTube.Enhance.sgmodule
+- url: https://github.com/158212892/QuantumultXMark/raw/refs/heads/main/My/Egern/modules/PingMe.yaml
+  enabled: false
+- url: https://raw.githubusercontent.com/Yu9191/Rewrite/refs/heads/main/lovekey.sgmodule
+  enabled: true
+- url: https://kelee.one/Tool/Loon/Lpx/PiPiXia_remove_ads.lpx
+  enabled: true
+- url: https://github.com/meichiny/rednote-feed-time/raw/rewrite-rule/modules/shadowrocket/rednote-feed-time.sgmodule
+  enabled: false
+- url: https://kelee.one/Tool/Loon/Lpx/12306_remove_ads.lpx
+  enabled: true
+- url: http://script.hub/file/_start_/https://raw.githubusercontent.com/ZenmoFeiShi/Qx/refs/heads/main/Didichuxing.snippet/_end_/Didichuxing.sgmodule?type=qx-rewrite&target=surge-module&del=true&jqEnabled=true
+  enabled: true
+- url: https://kelee.one/Tool/Loon/Lpx/DiDi_remove_ads.lpx
+  enabled: false
+- url: https://kelee.one/Tool/Loon/Lpx/WexinMiniPrograms_Remove_ads.lpx
+  enabled: true
+- url: https://kelee.one/Tool/Loon/Lpx/PinDuoDuo_remove_ads.lpx
+  enabled: true
+- url: http://script.hub/file/_start_/https://raw.githubusercontent.com/Yuheng0101/X/refs/heads/main/Scripts/ChinaMobile/NoAds.js/_end_/NoAds.sgmodule?type=qx-rewrite&n=%E4%B8%AD%E5%9B%BD%E7%A7%BB%E5%8A%A8%E5%8E%BB%E5%B9%BF%E5%91%8A%40Yuheng+%E5%BA%94%E7%94%A8%E5%87%80%E5%8C%96&headers=User-Agent:surge&del=true&jqEnabled=true&target=surge-module&category=Yuheng
+  enabled: true
+- url: https://kelee.one/Tool/Loon/Lpx/RedPaper_remove_ads.lpx
+  enabled: true
+- url: http://script.hub/file/_start_/https://loon.103516.xyz/Plugin/ColorfulCloudsWeatherPro.lpx/_end_/ColorfulCloudsWeatherPro.sgmodule?type=loon-plugin&target=surge-module&del=true&jqEnabled=true
+  enabled: true
+- url: http://script.hub/file/_start_/https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/kantian.lpx/_end_/kantian.sgmodule?type=loon-plugin&target=surge-module&del=true&jqEnabled=true
+  enabled: true
+- url: http://script.hub/file/_start_/https://raw.githubusercontent.com/Yu9191/Rewrite/refs/heads/main/mxy.js/_end_/mxy.sgmodule?type=qx-rewrite&target=surge-module&del=true&jqEnabled=true
+  enabled: true
+- url: https://mock.forward1.workers.dev/forward.sgmodule
+  enabled: false
+- url: http://script.hub/file/_start_/https://raw.githubusercontent.com/dheaihua/loon/refs/heads/main/sview.lpx/_end_/sview.sgmodule?type=loon-plugin&target=surge-module&del=true&jqEnabled=true
+  enabled: true
+- url: https://raw.githubusercontent.com/Yu9191/NeteasemusicAd/main/wyy.sgmodule
+  compat_arguments:
+    笔记: '0'
+    AI写歌: '0'
+    活动Tab: '0'
+    每日推荐: '1'
+    音乐合伙人: '0'
+    雷达歌单: '0'
+    排行榜: '0'
+    推荐专属歌单: '0'
+    你的专属歌单: '0'
+    脚本伪vip: '1'
+    VIP等级: '7'
+  enabled: true
+- url: https://kelee.one/Tool/Loon/Lpx/Amap_remove_ads.lpx
+  enabled: true
+- name: APP解锁合集
+  url: https://raw.githubusercontent.com/chxm1023/Script_X/main/Collections.sgmodule
+  enabled: true
+- name: Revenuecat-系列解锁合集
+  url: http://script.hub/file/_start_/https://raw.githubusercontent.com/chxm1023/Rewrite/main/Reheji.js/_end_/Reheji.sgmodule?type=qx-rewrite&target=surge-module&del=true&jqEnabled=true
+  enabled: true
+- url: https://reven.jsforbaby.workers.dev/reven/iTunes.sgmodule
+  compat_arguments:
+    Country: HK
+  enabled: true
+- name: iTunes-系列解锁合集
+  url: http://script.hub/file/_start_/https://raw.githubusercontent.com/chxm1023/Rewrite/main/iTunes.js/_end_/iTunes.sgmodule?type=qx-rewrite&target=surge-module&del=true&jqEnabled=true
+  enabled: true
+- url: https://kelee.one/Tool/Loon/Lpx/JD_remove_ads.lpx
+  enabled: true
+- url: https://raw.githubusercontent.com/mw418/Loon/main/plugin/jd_price.plugin
+  compat_arguments:
+    arg6: 'true'
+    arg2: 'true'
+  enabled: true
+- url: https://loon.103516.xyz/Plugin/Goofish.lpx
+  enabled: true
+- url: https://kelee.one/Tool/Loon/Lpx/Spotify_remove_ads.lpx
+  compat_arguments:
+    tab: 'true'
+  enabled: true
+- url: https://github.com/DualSubs/Spotify/releases/latest/download/DualSubs.Spotify.sgmodule
+  compat_arguments:
+    Types: Translate
+  enabled: true
+- name: YouTube去广告
+  url: https://raw.githubusercontent.com/Maasea/sgmodule/master/YouTube.Enhance.sgmodule
   enabled: true
 - url: https://github.com/DualSubs/YouTube/releases/latest/download/DualSubs.YouTube.yaml
   compat_arguments:
     Type: Translate
   enabled: true
-- url: https://reven.lovebabyforever.workers.dev/reven/iTunes.sgmodule
+- url: https://raw.githubusercontent.com/jadkg/egern/refs/heads/main/missav.module
   enabled: true
-- name: Revenuecat-系列解锁合集
-  url: http://script.hub/file/_start_/https://raw.githubusercontent.com/chxm1023/Rewrite/main/Reheji.js/_end_/Reheji.sgmodule?type=qx-rewrite&target=surge-module&del=true&jqEnabled=true
+- url: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Module/Function/FKTG.sgmodule
+  enabled: false
+- name: 代理测速
+  url: https://raw.githubusercontent.com/Keywos/rule/refs/heads/main/script/linkey/linkey.egern
   enabled: true
-- url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/surge-loon-to-egern.yaml
+- url: https://github.com/NSRingo/WeatherKit/releases/download/v4.0.0-beta2/iRingo.WeatherKit.yaml
+  enabled: true
+- name: Google重定向
+  url: https://raw.githubusercontent.com/cc63/Surge/main/Module/Spec/Google_Rewrite.sgmodule
   enabled: true
 - url: https://ddgksf2013.top/module/ScriptHub.Egern.sgmodule
   enabled: true
-- url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Official/%E2%AD%90%EF%B8%8F%20BoxJs.official.sgmodule
+- url: https://raw.githubusercontent.com/IBL3ND/module/refs/heads/main/surge-loon-to-egern.yaml
   enabled: true
-- url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Official/%E2%AD%90%EF%B8%8F%20Sub-Store.official.sgmodule
+- name: Boxjs
+  url: https://raw.githubusercontent.com/chavyleung/scripts/master/box/rewrite/boxjs.rewrite.surge.sgmodule
   enabled: true
-- url: https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/refs/heads/main/modules/script-hub.beta.surge.sgmodule
+- name: Sub-Store
+  url: https://raw.githubusercontent.com/QingRex/LoonKissSurge/refs/heads/main/Surge/Official/%E2%AD%90%EF%B8%8F%20Sub-Store.official.sgmodule
   enabled: true
+- name: 'Script Hub(β): 重写 & 规则集转换'
+  url: https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/modules/script-hub.beta.surge.sgmodule
+  enabled: true
+default_subscription_group: 🐔
+default_proxy_group: iBL3ND
