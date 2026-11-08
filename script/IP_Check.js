@@ -2,7 +2,6 @@
 const codeMap = { HK: '🇭🇰 香港', TW: '🇼🇸 台湾', SG: '🇸🇬 新加坡', JP: '🇯🇵 日本', KR: '🇰🇷 韩国', US: '🇺🇸 美国', DE: '🇩🇪 德国', GB: '🇬🇧 英国', NL: '🇳🇱 荷兰', FR: '🇫🇷 法国', CA: '🇨🇦 加拿大', AU: '🇦🇺 澳大利亚', TR: '🇹🇷 土耳其', MO: '🇲🇴 澳门', RU: '🇷🇺 俄罗斯' };
 
 const cityMap = {
-  // 中国香港
   'aberdeen': '香港仔',
   'causeway bay': '铜锣湾',
   'central': '中环',
@@ -23,7 +22,6 @@ const cityMap = {
   'wan chai': '湾仔',
   'yuen long': '元朗',
 
-  // 中国台湾
   'banqiao': '板桥',
   'changhua': '彰化',
   'hsinchu': '新竹',
@@ -36,11 +34,9 @@ const cityMap = {
   'xizhi': '汐止',
   'zhubei': '竹北',
 
-  // 新加坡
   'singapore': '新加坡',
   'loyang': '罗央',
 
-  // 日本
   'akita': '秋田',
   'chiba': '千叶',
   'fukuoka': '福冈',
@@ -63,7 +59,6 @@ const cityMap = {
   'toyosu': '丰洲',
   'yokohama': '横滨',
 
-  // 韩国
   'anyang': '安养',
   'busan': '釜山',
   'chuncheon': '春川',
@@ -87,7 +82,6 @@ const cityMap = {
   'yeongdeungpo gu': '永登浦区',
   'yongsan gu': '龙山区',
 
-  // 美国
   'ashburn': '阿什本',
   'atlanta': '亚特兰大',
   'boston': '波士顿',
@@ -143,7 +137,6 @@ const cityMap = {
   'tampa': '坦帕',
   'the dalles': '达尔斯',
 
-  // 德国
   'berlin': '柏林',
   'dusseldorf': '杜塞尔多夫',
   'falkenstein': '法尔肯施泰因',
@@ -153,49 +146,41 @@ const cityMap = {
   'nuremberg': '纽伦堡',
   'stuttgart': '斯图加特',
 
-  // 英国
   'canary wharf': '金丝雀码头',
   'london': '伦敦',
   'manchester': '曼彻斯特',
   'reading': '雷丁',
   'slough': '斯劳',
 
-  // 荷兰
   'amsterdam': '阿姆斯特丹',
   'eindhoven': '埃因霍温',
   'haarlem': '哈勒姆',
   'rotterdam': '鹿特丹',
   'schiphol': '史基浦',
-  'utrecht': '乌德勒支',
+  'utrecht': '乌得勒支',
 
-  // 法国
   'lyon': '里昂',
   'marseille': '马赛',
   'paris': '巴黎',
   'strasbourg': '斯特拉斯堡',
 
-  // 加拿大
   'beauharnois': '博阿努瓦',
   'montreal': '蒙特利尔',
   'toronto': '多伦多',
   'vancouver': '温哥华',
 
-  // 澳大利亚
   'brisbane': '布里斯班',
   'melbourne': '墨尔本',
   'perth': '珀斯',
   'sydney': '悉尼',
 
-  // 土耳其
   'ankara': '安卡拉',
   'istanbul': '伊斯坦布尔',
   'izmir': '伊兹密尔',
 
-  // 中国澳门
   'macao': '澳门',
   'macau': '澳门',
 
-  // 俄罗斯
   'moscow': '莫斯科',
   'saint petersburg': '圣彼得堡',
   'st petersburg': '圣彼得堡'
@@ -423,7 +408,7 @@ async function getSpeedTest(ctx, policy, timeoutMs, packetBytes) {
 
   try {
     const response = await ctx.http.get(
-      `https://speed.cloudflare.com/__down?bytes=${packetBytes}`,
+      \`https://speed.cloudflare.com/__down?bytes=\${packetBytes}\`,
       {
         timeout: timeoutMs,
         policy,
@@ -432,7 +417,7 @@ async function getSpeedTest(ctx, policy, timeoutMs, packetBytes) {
     );
 
     if (response.status < 200 || response.status >= 300) {
-      throw new Error(`HTTP ${response.status}`);
+      throw new Error(\`HTTP \${response.status}\`);
     }
 
     reader = response.body?.getReader?.();
@@ -490,7 +475,7 @@ async function getSpeedTest(ctx, policy, timeoutMs, packetBytes) {
   const seconds = (now() - start) / 1000;
   if (seconds < 0.2) return '⚠️ 测速失败';
 
-  return `${((downloadedBytes * 8) / 1e6 / seconds).toFixed(1)} Mbps`;
+  return \`\${((downloadedBytes * 8) / 1e6 / seconds).toFixed(1)} Mbps\`;
 }
 
 function pickIPPureData(d) {
@@ -515,11 +500,11 @@ function formatRiskLevel(risk) {
   const score = Number(risk);
   if (!Number.isFinite(score)) return null;
 
-  if (score >= 80) return `极高风险 (${score})`;
-  if (score >= 70) return `高风险 (${score})`;
-  if (score >= 40) return `中等风险 (${score})`;
+  if (score >= 80) return \`极高风险 (\${score})\`;
+  if (score >= 70) return \`高风险 (\${score})\`;
+  if (score >= 40) return \`中等风险 (\${score})\`;
 
-  return `纯净低危 (${score})`;
+  return \`纯净低危 (\${score})\`;
 }
 
 function makeIPPureStatus(failed, reason) {
@@ -566,7 +551,7 @@ async function getIPPureInfo(ctx, policy) {
 
     if (res.status < 200 || res.status >= 300) {
       console.log('IPPure HTTP状态异常:', res.status);
-      return makeIPPureStatus(true, `HTTP ${res.status}`);
+      return makeIPPureStatus(true, \`HTTP \${res.status}\`);
     }
 
     const d = await res.json();
@@ -583,18 +568,16 @@ async function getIPPureInfo(ctx, policy) {
 }
 
 /**
- * 检测网页连通性。
- * 200-399：网页可访问
- * 401/403：服务器已响应，但访问受限
- * 429：服务器已响应，但触发频率限制
- * 其他状态：按 HTTP 状态或网络错误显示
+ * HTTP 网页连通性检测。
+ * 使用 Egern 官方 ctx.http.get API。
  */
 async function checkWebsiteConnectivity(
   ctx,
   url,
   policy,
   label,
-  timeoutMs = 8000
+  timeoutMs = 8000,
+  requestOptions = {}
 ) {
   const start = now();
 
@@ -602,10 +585,14 @@ async function checkWebsiteConnectivity(
     const response = await ctx.http.get(url, {
       timeout: timeoutMs,
       policy,
-      credentials: 'omit',
+      credentials: requestOptions.credentials || 'omit',
       redirect: 'follow',
       headers: {
-        Accept: 'text/html,application/xhtml+xml'
+        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+        'Cache-Control': 'no-cache',
+        Pragma: 'no-cache',
+        ...(requestOptions.headers || {})
       }
     });
 
@@ -613,31 +600,87 @@ async function checkWebsiteConnectivity(
     const elapsed = Math.round(now() - start);
 
     if (status >= 200 && status < 400) {
-      return `可连接（${elapsed} ms）`;
+      return \`可连接（\${elapsed} ms）\`;
     }
 
     if (status === 401 || status === 403) {
-      return `已连接，访问受限（HTTP ${status}）`;
+      return \`已连接，访问受限（HTTP \${status}，\${elapsed} ms）\`;
     }
 
     if (status === 429) {
-      return '已连接，触发访问频率限制（HTTP 429）';
+      return \`已连接，请求频率受限（HTTP 429，\${elapsed} ms）\`;
     }
 
     if (status >= 400 && status < 500) {
-      return `已连接，页面返回异常（HTTP ${status}）`;
+      return \`已连接，页面返回异常（HTTP \${status}，\${elapsed} ms）\`;
     }
 
     if (status >= 500) {
-      return `服务端异常（HTTP ${status}）`;
+      return \`服务端异常（HTTP \${status}，\${elapsed} ms）\`;
     }
 
-    return `状态异常（HTTP ${status || '未知'}）`;
+    return \`状态异常（HTTP \${status || '未知'}，\${elapsed} ms）\`;
   } catch (e) {
-    console.log(`${label} 网页连通性检测失败:`, e);
     const elapsed = Math.round(now() - start);
-    return `连接失败（${elapsed} ms，超时或网络错误）`;
+    const detail = String(e?.message || e || '未知错误')
+      .replace(/[\\r\\n]+/g, ' ')
+      .slice(0, 100);
+    const isTimeout = /timeout|timed out|超时/i.test(detail);
+
+    console.log(\`\${label} 网页连通性检测异常（\${elapsed} ms）:\`, e);
+
+    if (isTimeout) {
+      return \`连接超时（\${elapsed} ms）\`;
+    }
+
+    return \`网络请求异常（\${elapsed} ms：\${detail}）\`;
   }
+}
+
+/**
+ * Gemini 专用检测。
+ * 主入口网络异常时，自动尝试备用路径。
+ * HTTP 403、429 等表示服务器已响应，不会误判为网络断开。
+ */
+async function checkGeminiConnectivity(ctx, policy, timeoutMs = 12000) {
+  const options = {
+    credentials: 'include',
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1'
+    }
+  };
+
+  const primary = await checkWebsiteConnectivity(
+    ctx,
+    'https://gemini.google.com/',
+    policy,
+    'Gemini',
+    timeoutMs,
+    options
+  );
+
+  if (!primary.startsWith('网络请求异常') &&
+      !primary.startsWith('连接超时')) {
+    return primary;
+  }
+
+  console.log('Gemini 主入口请求异常，尝试备用入口 /app');
+
+  const backup = await checkWebsiteConnectivity(
+    ctx,
+    'https://gemini.google.com/app',
+    policy,
+    'Gemini 备用入口',
+    timeoutMs,
+    options
+  );
+
+  if (!backup.startsWith('网络请求异常') &&
+      !backup.startsWith('连接超时')) {
+    return \`备用入口可用（\${backup}）\`;
+  }
+
+  return \`主入口及备用入口均失败（主：\${primary}；备用：\${backup}）\`;
 }
 
 function formatIPPureText(ipPureInfo) {
@@ -647,15 +690,15 @@ function formatIPPureText(ipPureInfo) {
   const nativeText = ipPureInfo.nativeText;
   const riskText = ipPureInfo.riskText;
 
-  if (nativeText && riskText) return `${nativeText}·${riskText}`;
+  if (nativeText && riskText) return \`\${nativeText}·\${riskText}\`;
 
   return nativeText || riskText || '暂无评级';
 }
 
 function normalizePlaceNameForCompare(text) {
   return String(text || '')
-    .replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '')
-    .replace(/\s+/g, '')
+    .replace(/[\\u{1F1E6}-\\u{1F1FF}]/gu, '')
+    .replace(/\\s+/g, '')
     .replace(/[·・.。,_-]/g, '')
     .trim()
     .toLowerCase();
@@ -693,7 +736,7 @@ function formatLocationName(ipInfo) {
     return countryName;
   }
 
-  return `${countryName}·${cityName}`;
+  return \`\${countryName}·\${cityName}\`;
 }
 
 function modResponseBody(
@@ -711,7 +754,7 @@ function modResponseBody(
     '出口': formatLocationName(ipInfo),
 
     '互联网服务提供商': ipInfo.asn
-      ? `AS${ipInfo.asn} ${ipInfo.as_desc || ''}`.trim()
+      ? \`AS\${ipInfo.asn} \${ipInfo.as_desc || ''}\`.trim()
       : '未知',
 
     '客户端': ipInfo.user_agent
@@ -787,7 +830,6 @@ export default async function(ctx) {
   const showSpeedTest = isEnvOn(env.SHOW_SPEED_TEST);
   const showIPPure = isEnvOn(env.SHOW_IPPURE);
 
-  // 新增网页连通性检测默认开启；可在 Egern 模块设置中分别关闭。
   const showGemini = env.SHOW_GEMINI === undefined
     ? true
     : isEnvOn(env.SHOW_GEMINI);
@@ -819,21 +861,17 @@ export default async function(ctx) {
     ? getIPPureInfo(ctx, policy)
     : null;
 
-  // 两项网页检测与测速、IPPure 查询并行执行。
-  // 两个网站分别设置超时，检测任务并行执行。
-  const GEMINI_TIMEOUT = 8000;
+  const GEMINI_TIMEOUT = 12000;
   const CHATGPT_TIMEOUT = 10000;
 
   const geminiTask = showGemini
-    ? checkWebsiteConnectivity(
+    ? checkGeminiConnectivity(
         ctx,
-        'https://gemini.google.com/',
         policy,
-        'Gemini',
         GEMINI_TIMEOUT
       ).catch(error => {
         console.log('Gemini任务异常:', error);
-        return '检测失败（任务异常）';
+        return 'Gemini检测失败（任务异常）';
       })
     : null;
 
