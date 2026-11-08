@@ -97,7 +97,7 @@ scriptings:
       match: ^https?://(?:4\.)?ipwho\.de(?::\d+)?(?:[/?#]|$)
       script_url: https://你的脚本地址/IP_Check.js
       update_interval: 86400
-      timeout: 20
+      timeout: 60
       body_required: true
       binary_body: false
       env:
