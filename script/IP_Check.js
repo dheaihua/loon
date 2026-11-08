@@ -589,12 +589,18 @@ async function getIPPureInfo(ctx, policy) {
  * 429：服务器已响应，但触发频率限制
  * 其他状态：按 HTTP 状态或网络错误显示
  */
-async function checkWebsiteConnectivity(ctx, url, policy, label) {
+async function checkWebsiteConnectivity(
+  ctx,
+  url,
+  policy,
+  label,
+  timeoutMs = 8000
+) {
   const start = now();
 
   try {
     const response = await ctx.http.get(url, {
-      timeout: 7000,
+      timeout: timeoutMs,
       policy,
       credentials: 'omit',
       redirect: 'follow',
@@ -629,7 +635,8 @@ async function checkWebsiteConnectivity(ctx, url, policy, label) {
     return `状态异常（HTTP ${status || '未知'}）`;
   } catch (e) {
     console.log(`${label} 网页连通性检测失败:`, e);
-    return '连接失败（超时或网络错误）';
+    const elapsed = Math.round(now() - start);
+    return `连接失败（${elapsed} ms，超时或网络错误）`;
   }
 }
 
@@ -813,13 +820,21 @@ export default async function(ctx) {
     : null;
 
   // 两项网页检测与测速、IPPure 查询并行执行。
+  // 两个网站分别设置超时，检测任务并行执行。
+  const GEMINI_TIMEOUT = 8000;
+  const CHATGPT_TIMEOUT = 10000;
+
   const geminiTask = showGemini
     ? checkWebsiteConnectivity(
         ctx,
         'https://gemini.google.com/',
         policy,
-        'Gemini'
-      )
+        'Gemini',
+        GEMINI_TIMEOUT
+      ).catch(error => {
+        console.log('Gemini任务异常:', error);
+        return '检测失败（任务异常）';
+      })
     : null;
 
   const chatgptTask = showChatGPT
@@ -827,8 +842,12 @@ export default async function(ctx) {
         ctx,
         'https://chatgpt.com/',
         policy,
-        'ChatGPT'
-      )
+        'ChatGPT',
+        CHATGPT_TIMEOUT
+      ).catch(error => {
+        console.log('ChatGPT任务异常:', error);
+        return '检测失败（任务异常）';
+      })
     : null;
 
   const [
