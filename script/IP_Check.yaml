@@ -1,0 +1,110 @@
+
+name: IP Check + Gemini + ChatGPT
+description: 保留 IP 信息展示、中文地区显示、IPPure 纯净度和 Cloudflare 下行测速，并增加 Gemini 与 ChatGPT 网页连通性检测。网页检测不代表账号登录或模型服务权限正常。
+
+compat_arguments:
+  指定策略组: DIRECT
+
+compat_arguments_desc: 指定 IP 信息、测速、纯净度以及 Gemini、ChatGPT 网页检测使用的策略组，默认为 DIRECT。
+
+env_schema:
+  SHOW_SPEED_TEST:
+    name: 下行测速功能
+    description: 开启后显示节点下行带宽，默认关闭。
+    default_value: 关闭
+    options:
+      - 开启
+      - 关闭
+
+  SPEED_TEST_PACKET:
+    name: 下行测速数据量
+    description: 设置单次测速数据量，默认 3MB。
+    default_value: 3MB
+    options:
+      - 1MB
+      - 1.5MB
+      - 2MB
+      - 2.5MB
+      - 3MB
+      - 3.5MB
+      - 4MB
+
+  SPEED_TEST_TIMEOUT:
+    name: 测速超时
+    description: 设置下行测速超时时间，默认 5 秒。
+    default_value: 5秒
+    options:
+      - 2.5秒
+      - 3秒
+      - 3.5秒
+      - 4秒
+      - 4.5秒
+      - 5秒
+      - 5.5秒
+      - 6秒
+      - 6.5秒
+
+  SHOW_IPPURE:
+    name: IP 纯净度显示
+    description: 开启后显示 IP 原生属性与风险评级，数据来自 IPPure，默认关闭。
+    default_value: 关闭
+    options:
+      - 开启
+      - 关闭
+
+  SHOW_GEMINI:
+    name: Gemini 网页连通性检测
+    description: 检测 Gemini 网页是否可以访问，默认开启。
+    default_value: 开启
+    options:
+      - 开启
+      - 关闭
+
+  SHOW_CHATGPT:
+    name: ChatGPT 网页连通性检测
+    description: 检测 ChatGPT 网页是否可以访问，默认开启。
+    default_value: 开启
+    options:
+      - 开启
+      - 关闭
+
+author: unknownTokyo（连通性扩展版）
+
+rules:
+  - domain:
+      match: speed.cloudflare.com
+      policy: "{{{指定策略组}}}"
+
+  - domain_suffix:
+      match: ippure.com
+      policy: "{{{指定策略组}}}"
+
+  - domain_suffix:
+      match: ipwho.de
+      policy: "{{{指定策略组}}}"
+
+  - domain_suffix:
+      match: gemini.google.com
+      policy: "{{{指定策略组}}}"
+
+  - domain_suffix:
+      match: chatgpt.com
+      policy: "{{{指定策略组}}}"
+
+scriptings:
+  - http_response:
+      name: IP Check
+      match: ^https?://(?:4\.)?ipwho\.de(?::\d+)?(?:[/?#]|$)
+      script_url: https://你的脚本地址/IP_Check.js
+      update_interval: 86400
+      timeout: 20
+      body_required: true
+      binary_body: false
+      env:
+        POLICY: "{{{指定策略组}}}"
+
+mitm:
+  hostnames:
+    includes:
+      - 4.ipwho.de
+      - ipwho.de
