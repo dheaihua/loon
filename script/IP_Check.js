@@ -2,7 +2,6 @@
 const codeMap = { HK: '🇭🇰 香港', TW: '🇼🇸 台湾', SG: '🇸🇬 新加坡', JP: '🇯🇵 日本', KR: '🇰🇷 韩国', US: '🇺🇸 美国', DE: '🇩🇪 德国', GB: '🇬🇧 英国', NL: '🇳🇱 荷兰', FR: '🇫🇷 法国', CA: '🇨🇦 加拿大', AU: '🇦🇺 澳大利亚', TR: '🇹🇷 土耳其', MO: '🇲🇴 澳门', RU: '🇷🇺 俄罗斯' };
 
 const cityMap = {
-  // 中国香港
   'aberdeen': '香港仔',
   'causeway bay': '铜锣湾',
   'central': '中环',
@@ -22,8 +21,6 @@ const cityMap = {
   'tuen mun': '屯门',
   'wan chai': '湾仔',
   'yuen long': '元朗',
-
-  // 中国台湾
   'banqiao': '板桥',
   'changhua': '彰化',
   'hsinchu': '新竹',
@@ -35,12 +32,8 @@ const cityMap = {
   'taoyuan': '桃园',
   'xizhi': '汐止',
   'zhubei': '竹北',
-
-  // 新加坡
   'singapore': '新加坡',
   'loyang': '罗央',
-
-  // 日本
   'akita': '秋田',
   'chiba': '千叶',
   'fukuoka': '福冈',
@@ -62,8 +55,6 @@ const cityMap = {
   'tokyo': '东京',
   'toyosu': '丰洲',
   'yokohama': '横滨',
-
-  // 韩国
   'anyang': '安养',
   'busan': '釜山',
   'chuncheon': '春川',
@@ -86,8 +77,6 @@ const cityMap = {
   'ulsan': '蔚山',
   'yeongdeungpo gu': '永登浦区',
   'yongsan gu': '龙山区',
-
-  // 美国
   'ashburn': '阿什本',
   'atlanta': '亚特兰大',
   'boston': '波士顿',
@@ -142,8 +131,6 @@ const cityMap = {
   'sunnyvale': '桑尼维尔',
   'tampa': '坦帕',
   'the dalles': '达尔斯',
-
-  // 德国
   'berlin': '柏林',
   'dusseldorf': '杜塞尔多夫',
   'falkenstein': '法尔肯施泰因',
@@ -152,50 +139,34 @@ const cityMap = {
   'munich': '慕尼黑',
   'nuremberg': '纽伦堡',
   'stuttgart': '斯图加特',
-
-  // 英国
   'canary wharf': '金丝雀码头',
   'london': '伦敦',
   'manchester': '曼彻斯特',
   'reading': '雷丁',
   'slough': '斯劳',
-
-  // 荷兰
   'amsterdam': '阿姆斯特丹',
   'eindhoven': '埃因霍温',
   'haarlem': '哈勒姆',
   'rotterdam': '鹿特丹',
   'schiphol': '史基浦',
   'utrecht': '乌德勒支',
-
-  // 法国
   'lyon': '里昂',
   'marseille': '马赛',
   'paris': '巴黎',
   'strasbourg': '斯特拉斯堡',
-
-  // 加拿大
   'beauharnois': '博阿努瓦',
   'montreal': '蒙特利尔',
   'toronto': '多伦多',
   'vancouver': '温哥华',
-
-  // 澳大利亚
   'brisbane': '布里斯班',
   'melbourne': '墨尔本',
   'perth': '珀斯',
   'sydney': '悉尼',
-
-  // 土耳其
   'ankara': '安卡拉',
   'istanbul': '伊斯坦布尔',
   'izmir': '伊兹密尔',
-
-  // 中国澳门
   'macao': '澳门',
   'macau': '澳门',
-
-  // 俄罗斯
   'moscow': '莫斯科',
   'saint petersburg': '圣彼得堡',
   'st petersburg': '圣彼得堡'
@@ -288,13 +259,11 @@ function parseBooleanLike(v) {
       case 'yes':
       case 'y':
         return true;
-
       case 'false':
       case '0':
       case 'no':
       case 'n':
         return false;
-
       default:
         return undefined;
     }
@@ -328,7 +297,6 @@ function isSuccessfulResponse(ctx) {
 
 function isJsonLikeResponse(ctx) {
   const contentType = ctx.response?.headers?.get?.('Content-Type') || '';
-
   return /(?:application|text)\/json|\+json|text\/plain/i.test(contentType);
 }
 
@@ -345,7 +313,6 @@ function isValidIPInfoObject(data) {
 async function getIPInfo(ctx) {
   if (!isSuccessfulResponse(ctx)) {
     console.log('原始响应状态码非 2xx，跳过改写:', ctx.response.status);
-
     return {
       ipInfo: null,
       fallbackBody: undefined,
@@ -358,7 +325,6 @@ async function getIPInfo(ctx) {
       '原始响应不是 JSON-like 类型，跳过改写:',
       ctx.response.headers?.get?.('Content-Type') || '无 Content-Type'
     );
-
     return {
       ipInfo: null,
       fallbackBody: undefined,
@@ -370,12 +336,10 @@ async function getIPInfo(ctx) {
 
   try {
     text = await ctx.response.text();
-
     const data = JSON.parse(text);
 
     if (!isValidIPInfoObject(data)) {
       console.log('响应不是预期 IP 信息结构，跳过格式化改写');
-
       return {
         ipInfo: null,
         fallbackBody: text,
@@ -393,7 +357,6 @@ async function getIPInfo(ctx) {
     };
   } catch (e) {
     console.log('IP信息解析失败，尝试返回原始响应:', e);
-
     return {
       ipInfo: null,
       fallbackBody: typeof text === 'string' ? text : undefined,
@@ -439,9 +402,7 @@ async function getSpeedTest(ctx, policy, timeoutMs, packetBytes) {
     if (!reader) throw new Error('Reader Error');
 
     const remainingMs = deadline - now();
-    if (remainingMs <= 0) {
-      throw new Error('Timeout');
-    }
+    if (remainingMs <= 0) throw new Error('Timeout');
 
     const timeoutPromise = new Promise((_, reject) => {
       timeoutId = setTimeout(() => {
@@ -459,9 +420,7 @@ async function getSpeedTest(ctx, policy, timeoutMs, packetBytes) {
         timeoutPromise
       ]);
 
-      if (timedOut) {
-        throw new Error('Timeout');
-      }
+      if (timedOut) throw new Error('Timeout');
 
       if (done) {
         streamCompleted = true;
@@ -474,9 +433,7 @@ async function getSpeedTest(ctx, policy, timeoutMs, packetBytes) {
   } finally {
     if (timeoutId) clearTimeout(timeoutId);
 
-    if (!streamCompleted) {
-      cancelReader(reader);
-    }
+    if (!streamCompleted) cancelReader(reader);
 
     if (reader?.releaseLock) {
       try {
@@ -495,17 +452,14 @@ async function getSpeedTest(ctx, policy, timeoutMs, packetBytes) {
 
 function pickIPPureData(d) {
   if (!d || typeof d !== 'object') return null;
-
   if (d.data && typeof d.data === 'object') return d.data;
   if (d.result && typeof d.result === 'object') return d.result;
-
   return d;
 }
 
 function formatNativeType(isResidential) {
   if (isResidential === true) return '原生住宅';
   if (isResidential === false) return '商业机房';
-
   return null;
 }
 
@@ -518,7 +472,6 @@ function formatRiskLevel(risk) {
   if (score >= 80) return `极高风险 (${score})`;
   if (score >= 70) return `高风险 (${score})`;
   if (score >= 40) return `中等风险 (${score})`;
-
   return `纯净低危 (${score})`;
 }
 
@@ -582,13 +535,6 @@ async function getIPPureInfo(ctx, policy) {
   }
 }
 
-/**
- * 检测网页连通性。
- * 200-399：网页可访问
- * 401/403：服务器已响应，但访问受限
- * 429：服务器已响应，但触发频率限制
- * 其他状态：按 HTTP 状态或网络错误显示
- */
 async function checkWebsiteConnectivity(
   ctx,
   url,
@@ -648,7 +594,6 @@ function formatIPPureText(ipPureInfo) {
   const riskText = ipPureInfo.riskText;
 
   if (nativeText && riskText) return `${nativeText}·${riskText}`;
-
   return nativeText || riskText || '暂无评级';
 }
 
@@ -663,24 +608,16 @@ function normalizePlaceNameForCompare(text) {
 
 function getCountryName(ipInfo) {
   const countryCode = String(ipInfo?.country_code || '').toUpperCase();
-
-  return (
-    codeMap[countryCode] ||
-    countryCode ||
-    '未知'
-  ).trim();
+  return (codeMap[countryCode] || countryCode || '未知').trim();
 }
 
 function formatLocationName(ipInfo) {
   const countryName = getCountryName(ipInfo);
-
   const cityName = typeof ipInfo.city_name_zh === 'string'
     ? ipInfo.city_name_zh.trim()
     : '';
 
-  if (!cityName) {
-    return countryName;
-  }
+  if (!cityName) return countryName;
 
   const normalizedCountry = normalizePlaceNameForCompare(countryName);
   const normalizedCity = normalizePlaceNameForCompare(cityName);
@@ -707,32 +644,24 @@ function modResponseBody(
 
   const body = {
     'IP地址': ipInfo.ip || '未知',
-
     '出口': formatLocationName(ipInfo),
-
     '互联网服务提供商': ipInfo.asn
       ? `AS${ipInfo.asn} ${ipInfo.as_desc || ''}`.trim()
       : '未知',
-
     '客户端': ipInfo.user_agent
       ? ipInfo.user_agent.replace(/^egern/i, 'Egern')
       : 'Egern'
   };
 
-  if (speedMbps) {
-    body['下行带宽'] = speedMbps;
-  }
-
-  if (ipPureText) {
-    body['IP纯净度'] = ipPureText;
-  }
+  if (speedMbps) body['下行带宽'] = speedMbps;
+  if (ipPureText) body['IP纯净度'] = ipPureText;
 
   if (geminiStatus) {
-    body['Gemini网页连通性'] = geminiStatus;
+    body['可用性（Gemini网页连通性）'] = geminiStatus;
   }
 
   if (chatgptStatus) {
-    body['ChatGPT网页连通性'] = chatgptStatus;
+    body['可用性（ChatGPT网页连通性）'] = chatgptStatus;
   }
 
   return body;
@@ -741,9 +670,7 @@ function modResponseBody(
 function prepareResponseHeaders(ctx, contentType) {
   const headers = new Headers(ctx.response.headers);
 
-  if (contentType) {
-    headers.set('Content-Type', contentType);
-  }
+  if (contentType) headers.set('Content-Type', contentType);
 
   headers.delete('Content-Length');
   headers.delete('Content-Encoding');
@@ -756,13 +683,17 @@ export default async function(ctx) {
   if (!ctx.response) return;
 
   const env = ctx.env || {};
+
+  // 原有策略组：IP信息、测速、IPPure
   const policy = env.POLICY || 'DIRECT';
+
+  // 新增策略组：Gemini、ChatGPT 独立使用
+  const geminiPolicy = env.GEMINI_POLICY || policy;
+  const chatgptPolicy = env.CHATGPT_POLICY || policy;
 
   const ipResult = await getIPInfo(ctx);
 
-  if (ipResult?.passthrough) {
-    return;
-  }
+  if (ipResult?.passthrough) return;
 
   const ipInfo = ipResult?.ipInfo;
 
@@ -787,7 +718,6 @@ export default async function(ctx) {
   const showSpeedTest = isEnvOn(env.SHOW_SPEED_TEST);
   const showIPPure = isEnvOn(env.SHOW_IPPURE);
 
-  // 新增网页连通性检测默认开启；可在 Egern 模块设置中分别关闭。
   const showGemini = env.SHOW_GEMINI === undefined
     ? true
     : isEnvOn(env.SHOW_GEMINI);
@@ -819,8 +749,6 @@ export default async function(ctx) {
     ? getIPPureInfo(ctx, policy)
     : null;
 
-  // 两项网页检测与测速、IPPure 查询并行执行。
-  // 两个网站分别设置超时，检测任务并行执行。
   const GEMINI_TIMEOUT = 8000;
   const CHATGPT_TIMEOUT = 10000;
 
@@ -828,7 +756,7 @@ export default async function(ctx) {
     ? checkWebsiteConnectivity(
         ctx,
         'https://gemini.google.com/',
-        policy,
+        geminiPolicy,
         'Gemini',
         GEMINI_TIMEOUT
       ).catch(error => {
@@ -841,7 +769,7 @@ export default async function(ctx) {
     ? checkWebsiteConnectivity(
         ctx,
         'https://chatgpt.com/',
-        policy,
+        chatgptPolicy,
         'ChatGPT',
         CHATGPT_TIMEOUT
       ).catch(error => {
