@@ -4,8 +4,10 @@ description: 保留 IP 信息展示、中文地区显示、IPPure 纯净度和 C
 
 compat_arguments:
   指定策略组: DIRECT
+  Gemini策略组: DIRECT
+  ChatGPT策略组: DIRECT
 
-compat_arguments_desc: 指定 IP 信息、测速、纯净度以及 Gemini、ChatGPT 网页检测使用的策略组，默认为 DIRECT。
+compat_arguments_desc: 指定 IP 信息、测速和 IPPure 使用的策略组；Gemini策略组和 ChatGPT策略组分别控制对应网页连通性检测，均默认为 DIRECT。
 
 env_schema:
   SHOW_SPEED_TEST:
@@ -85,11 +87,11 @@ rules:
 
   - domain_suffix:
       match: gemini.google.com
-      policy: "{{{指定策略组}}}"
+      policy: "{{{Gemini策略组}}}"
 
   - domain_suffix:
       match: chatgpt.com
-      policy: "{{{指定策略组}}}"
+      policy: "{{{ChatGPT策略组}}}"
 
 scriptings:
   - http_response:
@@ -102,6 +104,8 @@ scriptings:
       binary_body: false
       env:
         POLICY: "{{{指定策略组}}}"
+        GEMINI_POLICY: "{{{Gemini策略组}}}"
+        CHATGPT_POLICY: "{{{ChatGPT策略组}}}"
 
 mitm:
   hostnames:
