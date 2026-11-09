@@ -642,27 +642,29 @@ function modResponseBody(
 ) {
   const ipPureText = formatIPPureText(ipPureInfo);
 
+  // ChatGPT 倒数第三，Gemini 倒数第二，客户端最后
   const body = {
     'IP地址': ipInfo.ip || '未知',
     '出口': formatLocationName(ipInfo),
     '互联网服务提供商': ipInfo.asn
       ? `AS${ipInfo.asn} ${ipInfo.as_desc || ''}`.trim()
-      : '未知',
-    '客户端': ipInfo.user_agent
-      ? ipInfo.user_agent.replace(/^egern/i, 'Egern')
-      : 'Egern'
+      : '未知'
   };
 
   if (speedMbps) body['下行带宽'] = speedMbps;
   if (ipPureText) body['IP纯净度'] = ipPureText;
 
-  if (geminiStatus) {
-    body['可用性（Gemini网页连通性）'] = geminiStatus;
+  if (chatgptStatus) {
+    body['ChatGPT网页连通性'] = chatgptStatus;
   }
 
-  if (chatgptStatus) {
-    body['可用性（ChatGPT网页连通性）'] = chatgptStatus;
+  if (geminiStatus) {
+    body['Gemini网页连通性'] = geminiStatus;
   }
+
+  body['客户端'] = ipInfo.user_agent
+    ? ipInfo.user_agent.replace(/^egern/i, 'Egern')
+    : 'Egern';
 
   return body;
 }
@@ -684,12 +686,8 @@ export default async function(ctx) {
 
   const env = ctx.env || {};
 
-  // 原有策略组：IP信息、测速、IPPure
+  // Gemini、ChatGPT 恢复使用原来的统一策略组
   const policy = env.POLICY || 'DIRECT';
-
-  // 新增策略组：Gemini、ChatGPT 独立使用
-  const geminiPolicy = env.GEMINI_POLICY || policy;
-  const chatgptPolicy = env.CHATGPT_POLICY || policy;
 
   const ipResult = await getIPInfo(ctx);
 
@@ -756,7 +754,7 @@ export default async function(ctx) {
     ? checkWebsiteConnectivity(
         ctx,
         'https://gemini.google.com/',
-        geminiPolicy,
+        policy,
         'Gemini',
         GEMINI_TIMEOUT
       ).catch(error => {
@@ -769,7 +767,7 @@ export default async function(ctx) {
     ? checkWebsiteConnectivity(
         ctx,
         'https://chatgpt.com/',
-        chatgptPolicy,
+        policy,
         'ChatGPT',
         CHATGPT_TIMEOUT
       ).catch(error => {
